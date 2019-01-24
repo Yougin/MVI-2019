@@ -20,7 +20,12 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   private fun stream(): Observable<MainState> {
     return intentsSubject
         .compose(filterInitialIntent())
-        .map { MainState.idle() }
+        .doOnNext { println("Event: ${it.javaClass.simpleName}") }
+        .compose { upstream ->
+          upstream.publish { shared ->
+            shared.ofType(MainIntent.InitialIntent::class.java).compose { it.map { MainState.idle() } }
+          }
+        }
   }
 
   // TODO-eugene represent it as an extension function
