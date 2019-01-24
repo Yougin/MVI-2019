@@ -8,21 +8,24 @@ import timber.log.Timber
 
 class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-  private val intentsSubject = PublishSubject.create<MainIntent>()
-  private val _stateSubject = stream()
+  private val intentsEmitter = PublishSubject.create<MainIntent>()
 
-  override fun viewState(): Observable<MainState> = _stateSubject
+  private val _viewStateEmitter = stream()
+  override fun viewState(): Observable<MainState> = _viewStateEmitter
 
   override fun intents(intents: Observable<MainIntent>) {
-    intents.subscribe(intentsSubject)
+    intents.subscribe(intentsEmitter)
   }
 
   private fun stream(): Observable<MainState> {
-    return intentsSubject
+    return intentsEmitter
         .takeInitialObserverOnlyOnce()
         .doOnNext { Timber.d("Intent: ${it.javaClass.simpleName}") }
-        .compose(MainProcessor.process)
+        .mapIntentIntoResult()
   }
+
+  private fun Observable<MainIntent>.mapIntentIntoResult(): Observable<MainState> =
+      compose(MainProcessor.process)
 
   private fun Observable<MainIntent>.takeInitialObserverOnlyOnce() =
       compose { upstream ->
