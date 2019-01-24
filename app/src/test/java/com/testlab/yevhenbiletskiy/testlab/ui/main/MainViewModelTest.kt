@@ -22,7 +22,14 @@ class MainViewModelTest {
     observer.assertValue { it == MainState.idle() }
   }
 
-  //  @Test fun `should emit initial intent only once`(){
-  //
-  //  }
+  @Test fun `should emit initial intent only once`() {
+    val observer = viewModel.viewState().test()
+
+    val emitter = PublishSubject.create<MainIntent>()
+    viewModel.intents(emitter)
+    emitter.onNext(MainIntent.InitialIntent)
+    emitter.onNext(MainIntent.InitialIntent)
+
+    observer.assertValueCount(1)
+  }
 }
