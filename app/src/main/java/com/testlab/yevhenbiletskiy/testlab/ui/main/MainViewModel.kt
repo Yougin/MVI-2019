@@ -25,7 +25,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
         .compose(MainProcessor.process)
   }
 
-  private fun Observable<MainIntent>.takeInitialObserverOnlyOnce(): Observable<MainIntent> =
+  private fun Observable<MainIntent>.takeInitialObserverOnlyOnce() =
       compose { upstream ->
         upstream.publish { shared ->
           Observable.merge(
