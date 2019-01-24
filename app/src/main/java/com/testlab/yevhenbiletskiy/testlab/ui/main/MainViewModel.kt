@@ -3,7 +3,6 @@ package com.testlab.yevhenbiletskiy.testlab.ui.main
 import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.mvi.MviViewModel
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
@@ -45,8 +44,3 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       }
 }
 
-object MainReducer {
-  fun reduce(): BiFunction<MainState, MainResult, MainState> = BiFunction { viewState, result ->
-    MainState.idle()
-  }
-}
