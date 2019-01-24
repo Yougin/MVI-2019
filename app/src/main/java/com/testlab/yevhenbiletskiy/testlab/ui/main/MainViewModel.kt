@@ -11,7 +11,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   private val intentsSubject = PublishSubject.create<MainIntent>()
   private val _stateSubject = stream()
 
-  override fun state(): Observable<MainState> = _stateSubject
+  override fun viewState(): Observable<MainState> = _stateSubject
 
   override fun intents(intents: Observable<MainIntent>) {
     intents.subscribe(intentsSubject)

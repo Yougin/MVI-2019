@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    disposables.add(viewModel.state().subscribe { render(it) })
+    disposables.add(viewModel.viewState().subscribe { render(it) })
     viewModel.intents(intents())
   }
 
