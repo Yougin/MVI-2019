@@ -3,7 +3,6 @@ package com.testlab.yevhenbiletskiy.testlab.ui.main
 import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.mvi.MviViewModel
 import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
@@ -21,7 +20,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   private fun stream(): Observable<MainState> {
     return intentsSubject
         .takeInitialObserverOnlyOnce()
-        .doOnNext { Timber.d("Event: ${it.javaClass.simpleName}") }
+        .doOnNext { Timber.d("Intent: ${it.javaClass.simpleName}") }
         .compose(MainProcessor.process)
   }
 
@@ -36,10 +35,3 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       }
 }
 
-object MainProcessor {
-  val process = ObservableTransformer<MainIntent, MainState> { upstream ->
-    upstream.publish { shared ->
-      shared.ofType(MainIntent.InitialIntent::class.java).compose { it.map { MainState.idle() } }
-    }
-  }
-}
