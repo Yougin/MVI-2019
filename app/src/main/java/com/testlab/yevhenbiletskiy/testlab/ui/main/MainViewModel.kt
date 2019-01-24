@@ -5,6 +5,7 @@ import com.testlab.yevhenbiletskiy.testlab.mvi.MviViewModel
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
 
@@ -20,7 +21,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   private fun stream(): Observable<MainState> {
     return intentsSubject
         .takeInitialObserverOnlyOnce()
-        .doOnNext { println("Event: ${it.javaClass.simpleName}") }
+        .doOnNext { Timber.d("Event: ${it.javaClass.simpleName}") }
         .compose(MainProcessor.process)
   }
 
