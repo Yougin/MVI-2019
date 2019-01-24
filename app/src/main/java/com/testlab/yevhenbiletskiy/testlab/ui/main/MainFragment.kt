@@ -7,26 +7,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.testlab.yevhenbiletskiy.testlab.R
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import kotlin.LazyThreadSafetyMode.NONE
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
+  companion object {
+    fun newInstance() = MainFragment()
+  }
 
-    private lateinit var viewModel: MainViewModel
+  private val disposables = CompositeDisposable()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
+  // TODO-eugene what is NONE
+  private val viewModel: MainViewModel by lazy(NONE) {
+    ViewModelProviders.of(this).get(MainViewModel::class.java)
+  }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    return inflater.inflate(R.layout.main_fragment, container, false)
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+
+    disposables.add(viewModel.state().subscribe { render(it) })
+    viewModel.intents(intents())
+  }
+
+  private fun intents(): Observable<MainIntent> {
+    return Observable.just(MainIntent.InitialIntent)
+  }
+
+  private fun render(viewModel: MainState) { // TODO-eugene implement me
+  }
 
 }
