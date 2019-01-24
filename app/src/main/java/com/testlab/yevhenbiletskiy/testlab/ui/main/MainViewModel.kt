@@ -23,6 +23,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
         .map { MainState.idle() }
   }
 
+  // TODO-eugene represent it as an extension function
   private fun filterInitialIntent() =
       ObservableTransformer<MainIntent, MainIntent> { upstream ->
         upstream.publish { shared ->
