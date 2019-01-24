@@ -20,12 +20,18 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   private fun stream() = intentsEmitter
       .takeInitialObserverOnlyOnce()
       .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
-      .compose(intentsIntoResult())
+      .map { intentIntoActions(it) }
+      .compose(actionIntoResult())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
       .scan(MainState.idle()) { viewState, result -> MainState.idle() }
       .distinctUntilChanged()
 
-  private fun intentsIntoResult() = MainProcessor.process
+  private fun intentIntoActions(it: MainIntent): MainAction =
+      when (it) {
+        MainIntent.InitialIntent -> MainAction.InitialLoadAction
+      }
+
+  private fun actionIntoResult() = MainProcessor.process
 
   private fun Observable<MainIntent>.takeInitialObserverOnlyOnce() =
       compose { upstream ->
