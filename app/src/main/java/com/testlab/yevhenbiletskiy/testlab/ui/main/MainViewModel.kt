@@ -19,14 +19,13 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
 
   private fun stream(): Observable<MainState> {
     return intentsSubject
-        .compose(filterInitialIntent())
+        .takeInitialObserverOnlyOnce()
         .doOnNext { println("Event: ${it.javaClass.simpleName}") }
-        .compose(MainProcessor().process)
+        .compose(MainProcessor.process)
   }
 
-  // TODO-eugene represent it as an extension function
-  private fun filterInitialIntent() =
-      ObservableTransformer<MainIntent, MainIntent> { upstream ->
+  private fun Observable<MainIntent>.takeInitialObserverOnlyOnce(): Observable<MainIntent> =
+      compose { upstream ->
         upstream.publish { shared ->
           Observable.merge(
               shared.ofType(MainIntent.InitialIntent::class.java).take(1),
@@ -36,7 +35,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       }
 }
 
-class MainProcessor {
+object MainProcessor {
   val process = ObservableTransformer<MainIntent, MainState> { upstream ->
     upstream.publish { shared ->
       shared.ofType(MainIntent.InitialIntent::class.java).compose { it.map { MainState.idle() } }
