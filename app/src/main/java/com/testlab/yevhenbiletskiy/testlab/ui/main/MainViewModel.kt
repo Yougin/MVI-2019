@@ -23,7 +23,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       .map { intentIntoActions(it) }
       .compose(actionIntoResult())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
-      .scan(MainState.idle(), MainReducer.reduce()) // compose me
+      .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
 
   private fun intentIntoActions(it: MainIntent): MainAction =
