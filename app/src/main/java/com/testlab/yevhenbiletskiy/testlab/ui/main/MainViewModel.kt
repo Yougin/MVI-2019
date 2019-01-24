@@ -18,7 +18,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
   }
 
   private fun stream() = intentsEmitter
-      .takeInitialObserverOnlyOnce()
+      .takeInitialIntentOnlyOnce()
       .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
       .map { intentIntoActions(it) }
       .compose(actionIntoResult())
@@ -33,7 +33,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
 
   private fun actionIntoResult() = MainProcessor.process
 
-  private fun Observable<MainIntent>.takeInitialObserverOnlyOnce() =
+  private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
       compose { upstream ->
         upstream.publish { shared ->
           Observable.merge(
