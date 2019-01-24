@@ -3,6 +3,7 @@ package com.testlab.yevhenbiletskiy.testlab.ui.main
 import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.mvi.MviViewModel
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
@@ -23,7 +24,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       .map { intentIntoActions(it) }
       .compose(actionIntoResult())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
-      .scan(MainState.idle()) { viewState, result -> MainState.idle() }
+      .scan(MainState.idle(), MainReducer.reduce()) // compose me
       .distinctUntilChanged()
 
   private fun intentIntoActions(it: MainIntent): MainAction =
@@ -44,3 +45,8 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       }
 }
 
+object MainReducer {
+  fun reduce(): BiFunction<MainState, MainResult, MainState> = BiFunction { viewState, result ->
+    MainState.idle()
+  }
+}
