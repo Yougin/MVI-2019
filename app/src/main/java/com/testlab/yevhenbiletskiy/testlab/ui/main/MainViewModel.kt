@@ -21,11 +21,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
     return intentsSubject
         .compose(filterInitialIntent())
         .doOnNext { println("Event: ${it.javaClass.simpleName}") }
-        .compose { upstream ->
-          upstream.publish { shared ->
-            shared.ofType(MainIntent.InitialIntent::class.java).compose { it.map { MainState.idle() } }
-          }
-        }
+        .compose(MainProcessor().process)
   }
 
   // TODO-eugene represent it as an extension function
@@ -38,5 +34,12 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
           )
         }
       }
+}
 
+class MainProcessor {
+  val process = ObservableTransformer<MainIntent, MainState> { upstream ->
+    upstream.publish { shared ->
+      shared.ofType(MainIntent.InitialIntent::class.java).compose { it.map { MainState.idle() } }
+    }
+  }
 }
