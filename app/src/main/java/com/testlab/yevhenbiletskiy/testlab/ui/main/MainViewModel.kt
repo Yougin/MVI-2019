@@ -43,4 +43,3 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
         }
       }
 }
-
