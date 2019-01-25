@@ -21,7 +21,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       .takeInitialIntentOnlyOnce()
       .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
       .map { intentIntoActions(it) }
-      .compose(actionIntoResult())
+      .compose(MainProcessor.process)
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
       .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
@@ -30,8 +30,6 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
       when (it) {
         MainIntent.InitialIntent -> MainAction.FetchDataAction
       }
-
-  private fun actionIntoResult() = MainProcessor.process
 
   private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
       compose { upstream ->
