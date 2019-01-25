@@ -21,7 +21,7 @@ sealed class MainIntent : MviIntent {
 }
 
 sealed class MainAction {
-  object InitialLoadAction : MainAction()
+  object FetchDataAction : MainAction()
 }
 
 sealed class MainResult {

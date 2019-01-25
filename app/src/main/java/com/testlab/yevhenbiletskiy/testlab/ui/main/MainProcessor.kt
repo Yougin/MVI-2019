@@ -6,11 +6,11 @@ import io.reactivex.ObservableTransformer
 object MainProcessor {
   val process = ObservableTransformer<MainAction, MainResult> { upstream ->
     upstream.publish { shared ->
-      shared.ofType(MainAction.InitialLoadAction::class.java).onInitialLoadAction()
+      shared.ofType(MainAction.FetchDataAction::class.java).onFetchDataAction()
     }
   }
 
-  private fun Observable<out MainAction>.onInitialLoadAction(): Observable<MainResult> {
+  private fun Observable<out MainAction>.onFetchDataAction(): Observable<MainResult> {
     return map { MainResult.InitialLoadResult("Hello World!") }
   }
 

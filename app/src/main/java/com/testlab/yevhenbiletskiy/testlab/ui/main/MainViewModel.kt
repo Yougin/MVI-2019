@@ -28,7 +28,7 @@ class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
 
   private fun intentIntoActions(it: MainIntent): MainAction =
       when (it) {
-        MainIntent.InitialIntent -> MainAction.InitialLoadAction
+        MainIntent.InitialIntent -> MainAction.FetchDataAction
       }
 
   private fun actionIntoResult() = MainProcessor.process
