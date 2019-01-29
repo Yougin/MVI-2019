@@ -35,4 +35,16 @@ class MainViewModelTest {
     emitter.onNext(MainIntent.InitialIntent)
     observer.assertValueCount(2)
   }
+
+  @Test fun `should emit state with text on initial intent`() {
+    val observer = viewModel.viewState().test()
+    val emitter = PublishSubject.create<MainIntent>()
+    viewModel.intents(emitter)
+
+    emitter.onNext(MainIntent.InitialIntent)
+    observer.assertValueCount(2)
+
+    assertThat(observer.values()[1]).isEqualTo(MainState(false, "Hello World!"))
+  }
+
 }
