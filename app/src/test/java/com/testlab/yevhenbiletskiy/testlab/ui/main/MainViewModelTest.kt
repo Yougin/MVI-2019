@@ -13,16 +13,6 @@ class MainViewModelTest {
     viewModel = MainViewModel()
   }
 
-  @Test fun `should emit idle status on initial intent`() {
-    val observer = viewModel.viewState().test()
-    val emitter = PublishSubject.create<MainIntent>()
-    viewModel.intents(emitter)
-
-    emitter.onNext(MainIntent.InitialIntent)
-
-    observer.assertValue { it == MainState.idle() }
-  }
-
   @Test fun `should emit state with loading true on initial intent`() {
     val observer = viewModel.viewState().test()
     val emitter = PublishSubject.create<MainIntent>()
@@ -34,14 +24,15 @@ class MainViewModelTest {
     assertThat(values[0]).isEqualTo(MainState(isLoading = true, text = ""))
   }
 
-  @Test fun `should emit initial intent only once`() {
+  @Test fun `should emit state only only once for each initial intent`() {
     val observer = viewModel.viewState().test()
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
 
     emitter.onNext(MainIntent.InitialIntent)
-    emitter.onNext(MainIntent.InitialIntent)
+    observer.assertValueCount(2)
 
-    observer.assertValueCount(1)
+    emitter.onNext(MainIntent.InitialIntent)
+    observer.assertValueCount(2)
   }
 }
