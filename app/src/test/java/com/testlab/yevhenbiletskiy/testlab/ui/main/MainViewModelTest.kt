@@ -1,5 +1,6 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
+import com.google.common.truth.Truth.assertThat
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
@@ -14,19 +15,30 @@ class MainViewModelTest {
 
   @Test fun `should emit idle status on initial intent`() {
     val observer = viewModel.viewState().test()
-
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
+
     emitter.onNext(MainIntent.InitialIntent)
 
     observer.assertValue { it == MainState.idle() }
   }
 
-  @Test fun `should emit initial intent only once`() {
+  @Test fun `should emit state with loading true on initial intent`() {
     val observer = viewModel.viewState().test()
-
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
+
+    emitter.onNext(MainIntent.InitialIntent)
+
+    val values = observer.values()
+    assertThat(values[0]).isEqualTo(MainState(isLoading = true, text = ""))
+  }
+
+  @Test fun `should emit initial intent only once`() {
+    val observer = viewModel.viewState().test()
+    val emitter = PublishSubject.create<MainIntent>()
+    viewModel.intents(emitter)
+
     emitter.onNext(MainIntent.InitialIntent)
     emitter.onNext(MainIntent.InitialIntent)
 

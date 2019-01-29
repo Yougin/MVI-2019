@@ -6,6 +6,10 @@ import io.reactivex.functions.BiFunction
 object MainReducer {
   fun reduce(): BiFunction<MainState, Lce<out MainResult>, MainState> =
       BiFunction { viewState, result ->
-        MainState.idle()
+        when (result) {
+          is Lce.Loading -> viewState.copy(isLoading = true)
+          is Lce.Content -> TODO()
+          is Lce.Error -> TODO()
+        }
       }
 }
