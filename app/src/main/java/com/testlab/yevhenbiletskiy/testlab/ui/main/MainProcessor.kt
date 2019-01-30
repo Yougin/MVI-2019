@@ -3,6 +3,8 @@ package com.testlab.yevhenbiletskiy.testlab.ui.main
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
 
 object MainProcessor {
   val process = ObservableTransformer<MainAction, Lce<out MainResult>> { upstream ->
@@ -15,6 +17,8 @@ object MainProcessor {
       flatMap {
         Observable
             .just<Lce<MainResult.InitialLoadResult>>(Lce.Content(MainResult.InitialLoadResult("Hello World!")))
+            .delay(3, TimeUnit.SECONDS)
             .startWith(Lce.Loading())
+            .observeOn(AndroidSchedulers.mainThread())
       }
 }
