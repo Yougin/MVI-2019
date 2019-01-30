@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.testlab.yevhenbiletskiy.testlab.App
 import com.testlab.yevhenbiletskiy.testlab.R
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.LazyThreadSafetyMode.NONE
 
 class MainFragment : Fragment() {
@@ -34,6 +36,8 @@ class MainFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
+    (activity?.applicationContext as App).component.getMainFragmentComponent().inject(this)
+
     disposables.add(viewModel.viewState().subscribe { render(it) })
     viewModel.intents(intents())
   }
@@ -43,6 +47,8 @@ class MainFragment : Fragment() {
   }
 
   private fun render(viewModel: MainState) { // TODO-eugene implement me
+    progressBar.visibility = if (viewModel.isLoading) View.VISIBLE else View.GONE
+    message.text = viewModel.text
   }
 
 }
