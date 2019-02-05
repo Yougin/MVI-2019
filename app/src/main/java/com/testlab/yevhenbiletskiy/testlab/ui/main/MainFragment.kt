@@ -49,7 +49,7 @@ class MainFragment : Fragment() {
     return Observable.just(MainIntent.InitialIntent)
   }
 
-  private fun render(viewModel: MainState) { // TODO-eugene implement me
+  private fun render(viewModel: MainState) { 
     progressBar.visibility = if (viewModel.isLoading) View.VISIBLE else View.GONE
     message.text = viewModel.text
   }
