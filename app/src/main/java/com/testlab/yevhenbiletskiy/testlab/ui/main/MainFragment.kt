@@ -1,5 +1,6 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -36,11 +37,13 @@ class MainFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    (activity?.applicationContext as App).component.getMainFragmentComponent().inject(this)
+    app().component.getMainFragmentComponent().inject(this)
 
     disposables.add(viewModel.viewState().subscribe { render(it) })
     viewModel.intents(intents())
   }
+
+  private fun app() = this.activity?.applicationContext as App
 
   private fun intents(): Observable<MainIntent> {
     return Observable.just(MainIntent.InitialIntent)
