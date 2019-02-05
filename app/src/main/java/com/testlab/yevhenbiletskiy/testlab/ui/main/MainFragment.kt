@@ -1,6 +1,5 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -47,7 +46,7 @@ class MainFragment : Fragment() {
     return Observable.just(MainIntent.InitialIntent)
   }
 
-  private fun render(viewModel: MainState) { 
+  private fun render(viewModel: MainState) {
     progressBar.visibility = if (viewModel.isLoading) View.VISIBLE else View.GONE
     message.text = viewModel.text
   }
