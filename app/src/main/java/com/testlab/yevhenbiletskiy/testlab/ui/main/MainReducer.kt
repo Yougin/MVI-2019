@@ -5,10 +5,10 @@ import io.reactivex.functions.BiFunction
 
 object MainReducer {
   fun reduce(): BiFunction<MainState, Lce<out MainResult>, MainState> =
-      BiFunction { viewState, lce ->
-        when (lce) {
+      BiFunction { viewState, result ->
+        when (result) {
           is Lce.Loading -> onLoadingResult(viewState)
-          is Lce.Content -> onContentResult(lce, viewState)
+          is Lce.Content -> onContentResult(result, viewState)
           is Lce.Error -> onErrorResult()
         }
       }
@@ -16,10 +16,10 @@ object MainReducer {
   private fun onLoadingResult(viewState: MainState) = viewState.copy(isLoading = true)
 
   private fun onContentResult(
-      lce: Lce.Content<out MainResult>,
+      result: Lce.Content<out MainResult>,
       viewState: MainState
-  ): MainState = when (lce.packet) {
-    is MainResult.InitialLoadResult -> viewState.copy(isLoading = false, text = lce.packet.text)
+  ): MainState = when (result.packet) {
+    is MainResult.InitialLoadResult -> viewState.copy(isLoading = false, text = result.packet.text)
   }
 
   private fun onErrorResult(): MainState {
