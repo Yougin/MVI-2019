@@ -21,7 +21,6 @@ class MainFragment : Fragment() {
 
   private val disposables = CompositeDisposable()
 
-  // TODO-eugene what is NONE
   private val viewModel: MainViewModel by lazy(NONE) {
     ViewModelProviders.of(this).get(MainViewModel::class.java)
   }
