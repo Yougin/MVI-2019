@@ -37,6 +37,7 @@ class AppModule(private val app: Context) {
 
 // View Model injection part
 // https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src/main/java /com/android/example/github/di/ViewModelModule.kt
+// https://www.techyourchance.com/dependency-injection-viewmodel-with-dagger-2/
 
 @MustBeDocumented
 @Target(
