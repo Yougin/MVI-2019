@@ -1,5 +1,6 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,7 +12,7 @@ import com.testlab.yevhenbiletskiy.testlab.R
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlin.LazyThreadSafetyMode.NONE
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
@@ -21,9 +22,9 @@ class MainFragment : Fragment() {
 
   private val disposables = CompositeDisposable()
 
-  private val viewModel: MainViewModel by lazy(NONE) {
-    ViewModelProviders.of(this).get(MainViewModel::class.java)
-  }
+  @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+  private lateinit var viewModel: MainViewModel
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +35,7 @@ class MainFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
 
     app().component.getMainFragmentComponent().inject(this)
+    viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
     disposables.add(viewModel.viewState().subscribe { render(it) })
     viewModel.intents(intents())

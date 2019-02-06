@@ -5,8 +5,9 @@ import com.testlab.yevhenbiletskiy.testlab.mvi.MviViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import javax.inject.Inject
 
-class MainViewModel : ViewModel(), MviViewModel<MainIntent, MainState> {
+class MainViewModel @Inject constructor() : ViewModel(), MviViewModel<MainIntent, MainState> {
 
   private val intentsEmitter = PublishSubject.create<MainIntent>()
 
