@@ -26,6 +26,8 @@ class MainViewModel @Inject constructor() : ViewModel(), MviViewModel<MainIntent
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
       .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
+      .replay(1)
+      .autoConnect(0)
 
   private fun intentIntoActions(it: MainIntent): MainAction =
       when (it) {
