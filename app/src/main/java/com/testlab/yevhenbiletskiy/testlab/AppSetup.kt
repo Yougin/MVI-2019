@@ -1,11 +1,10 @@
 package com.testlab.yevhenbiletskiy.testlab
 
 import android.content.Context
-import com.testlab.yevhenbiletskiy.testlab.ui.main.MainFragment
+import com.testlab.yevhenbiletskiy.testlab.ui.main.MainFragmentComponent
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import dagger.Subcomponent
 import javax.inject.Scope
 import javax.inject.Singleton
 
@@ -26,11 +25,3 @@ class AppModule(private val app: Context) {
   @Singleton
   fun provideApplicationContext(): Context = app
 }
-
-@Subcomponent(modules = [(MainFragmentModule::class)])
-interface MainFragmentComponent {
-  fun inject(activity: MainFragment)
-}
-
-@Module()
-class MainFragmentModule
