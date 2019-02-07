@@ -1,8 +1,9 @@
-package com.testlab.yevhenbiletskiy.testlab
+package com.testlab.yevhenbiletskiy.testlab.presentation
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.testlab.yevhenbiletskiy.testlab.ui.main.MainFragment
+import com.testlab.yevhenbiletskiy.testlab.R
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

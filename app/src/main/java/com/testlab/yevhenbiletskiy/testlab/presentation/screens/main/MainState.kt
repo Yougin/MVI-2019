@@ -1,7 +1,7 @@
-package com.testlab.yevhenbiletskiy.testlab.ui.main
+package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
-import com.testlab.yevhenbiletskiy.testlab.mvi.MviIntent
-import com.testlab.yevhenbiletskiy.testlab.mvi.MviState
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviIntent
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviState
 
 data class MainState(
     val isLoading: Boolean,
@@ -10,8 +10,8 @@ data class MainState(
 
   companion object {
     fun idle() = MainState(
-        isLoading = true,
-        text = ""
+      isLoading = true,
+      text = ""
     )
   }
 }

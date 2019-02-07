@@ -1,4 +1,4 @@
-package com.testlab.yevhenbiletskiy.testlab.ui.main
+package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import io.reactivex.Observable
@@ -16,7 +16,9 @@ object MainProcessor {
   private fun Observable<out MainAction>.onFetchDataAction(): Observable<Lce<out MainResult>> =
       flatMap {
         Observable
-            .just<Lce<MainResult.InitialLoadResult>>(Lce.Content(MainResult.InitialLoadResult("Hello World!")))
+            .just<Lce<MainResult.InitialLoadResult>>(Lce.Content(
+                MainResult.InitialLoadResult("Hello World!")
+            ))
             .delay(3, TimeUnit.SECONDS)
             .startWith(Lce.Loading())
             .observeOn(AndroidSchedulers.mainThread())

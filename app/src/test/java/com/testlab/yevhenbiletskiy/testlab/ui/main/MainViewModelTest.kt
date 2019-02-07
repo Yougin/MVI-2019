@@ -1,6 +1,9 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
 import com.google.common.truth.Truth.assertThat
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +24,12 @@ class MainViewModelTest {
     emitter.onNext(MainIntent.InitialIntent)
 
     val values = observer.values()
-    assertThat(values[0]).isEqualTo(MainState(isLoading = true, text = ""))
+    assertThat(values[0]).isEqualTo(
+        MainState(
+            isLoading = true,
+            text = ""
+        )
+    )
   }
 
   @Test fun `should emit state only only once for each initial intent`() {
@@ -44,7 +52,12 @@ class MainViewModelTest {
     emitter.onNext(MainIntent.InitialIntent)
     observer.assertValueCount(2)
 
-    assertThat(observer.values()[1]).isEqualTo(MainState(false, "Hello World!"))
+    assertThat(observer.values()[1]).isEqualTo(
+        MainState(
+            false,
+            "Hello World!"
+        )
+    )
   }
 
 }

@@ -1,17 +1,10 @@
-package com.testlab.yevhenbiletskiy.testlab
+package com.testlab.yevhenbiletskiy.testlab.presentation
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
-import com.testlab.yevhenbiletskiy.testlab.ui.main.MainFragmentComponent
-import com.testlab.yevhenbiletskiy.testlab.ui.main.MainViewModel
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainFragmentComponent
 import dagger.*
-import dagger.multibindings.IntoMap
-import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Scope
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Scope
 annotation class MainFragmentScope

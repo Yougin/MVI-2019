@@ -1,4 +1,4 @@
-package com.testlab.yevhenbiletskiy.testlab
+package com.testlab.yevhenbiletskiy.testlab.presentation
 
 import android.app.Application
 import timber.log.Timber
@@ -12,7 +12,8 @@ open class App : Application() {
     super.onCreate()
     setupTimber()
 
-    component = DaggerAppComponent.builder().appModule(AppModule(this)).build().also { it.inject(this) }
+    component = DaggerAppComponent.builder()
+      .appModule(AppModule(this)).build().also { it.inject(this) }
   }
 
   private fun setupTimber() {
