@@ -9,16 +9,21 @@ import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 
 @Subcomponent(modules = [(MainFragmentModule::class)])
+@ScreenScope
 interface MainFragmentComponent {
-  fun inject(activity: MainFragment)
+    fun inject(activity: MainFragment)
 }
 
 @Module(includes = [ViewModelModule::class])
 abstract class MainFragmentModule {
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(MainViewModel::class)
-  abstract fun bindUserViewModel(mainViewModel: MainViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindUserViewModel(mainViewModel: MainViewModel): ViewModel
+
+    @Binds
+    @ScreenScope
+    abstract fun providesProcessor(mainProcessor: MainProcessor): Processor
 
 }

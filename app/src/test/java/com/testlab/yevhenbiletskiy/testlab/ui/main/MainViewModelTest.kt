@@ -1,19 +1,22 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
 import com.google.common.truth.Truth.assertThat
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.*
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 
 class MainViewModelTest {
 
+  @Mock private lateinit var processor: Processor
   private lateinit var viewModel: MainViewModel
 
   @Before fun setUp() {
-    viewModel = MainViewModel()
+    MockitoAnnotations.initMocks(this)
+
+    viewModel = MainViewModel(processor)
   }
 
   @Test fun `should emit state with loading true on initial intent`() {

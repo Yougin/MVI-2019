@@ -7,7 +7,9 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel(),
+class MainViewModel @Inject constructor(
+    private val processor: Processor
+) : ViewModel(),
     MviViewModel<MainIntent, MainState> {
 
   private val intentsEmitter = PublishSubject.create<MainIntent>()
@@ -23,7 +25,7 @@ class MainViewModel @Inject constructor() : ViewModel(),
       .takeInitialIntentOnlyOnce()
       .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
       .map { intentIntoActions(it) }
-      .compose(MainProcessor.process)
+      .compose(processor.process())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
       .scan(
           MainState.idle(),
