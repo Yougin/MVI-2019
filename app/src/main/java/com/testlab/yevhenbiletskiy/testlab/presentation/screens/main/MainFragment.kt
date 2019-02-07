@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.UiThread
 import com.testlab.yevhenbiletskiy.testlab.presentation.App
 import com.testlab.yevhenbiletskiy.testlab.R
 import io.reactivex.Observable

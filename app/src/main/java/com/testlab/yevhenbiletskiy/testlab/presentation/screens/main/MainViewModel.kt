@@ -1,6 +1,7 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import android.arch.lifecycle.ViewModel
+import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -8,7 +9,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val processor: Processor
+    private val processor: Processor<MainAction, Lce<out MainResult>>
 ) : ViewModel(),
     MviViewModel<MainIntent, MainState> {
 

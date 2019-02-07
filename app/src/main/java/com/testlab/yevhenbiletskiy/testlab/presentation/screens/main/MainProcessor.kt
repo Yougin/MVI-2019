@@ -3,15 +3,15 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-interface Processor {
-  fun process(): ObservableTransformer<MainAction, Lce<out MainResult>>
+interface Processor<T, U> {
+  fun process(): ObservableTransformer<T, U>
 }
 
-class MainProcessor @Inject constructor() : Processor {
+class MainProcessor @Inject constructor() : Processor<MainAction, Lce<out MainResult>> {
 
   override fun process() = ObservableTransformer<MainAction, Lce<out MainResult>> { upstream ->
     upstream.publish<Lce<out MainResult>> { shared ->
@@ -29,6 +29,6 @@ class MainProcessor @Inject constructor() : Processor {
             )
             .delay(3, TimeUnit.SECONDS)
             .startWith(Lce.Loading())
-            .observeOn(Schedulers.trampoline())
+            .observeOn(AndroidSchedulers.mainThread())
       }
 }

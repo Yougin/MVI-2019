@@ -1,6 +1,7 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import android.arch.lifecycle.ViewModel
+import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelKey
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelModule
 import dagger.Binds
@@ -24,6 +25,6 @@ abstract class MainFragmentModule {
 
     @Binds
     @ScreenScope
-    abstract fun providesProcessor(mainProcessor: MainProcessor): Processor
+    abstract fun providesProcessor(mainProcessor: MainProcessor): Processor<MainAction, Lce<out MainResult>>
 
 }
