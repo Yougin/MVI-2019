@@ -7,10 +7,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-interface Processor<T, U> {
-  fun process(): ObservableTransformer<T, U>
-}
-
 class MainProcessor @Inject constructor() : Processor<MainAction, Lce<out MainResult>> {
 
   override fun process() = ObservableTransformer<MainAction, Lce<out MainResult>> { upstream ->

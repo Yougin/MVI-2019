@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations
 
 class MainViewModelTest {
 
-  @Mock private lateinit var processor: Processor
+  @Mock private lateinit var processor: MainProcessor
   private lateinit var viewModel: MainViewModel
 
   @Before fun setUp() {
