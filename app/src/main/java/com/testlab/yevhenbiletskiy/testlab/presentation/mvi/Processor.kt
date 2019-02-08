@@ -1,4 +1,4 @@
-package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
+package com.testlab.yevhenbiletskiy.testlab.presentation.mvi
 
 import io.reactivex.ObservableTransformer
 

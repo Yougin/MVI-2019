@@ -1,6 +1,7 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers

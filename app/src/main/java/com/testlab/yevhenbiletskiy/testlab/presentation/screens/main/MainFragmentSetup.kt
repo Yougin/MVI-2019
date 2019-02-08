@@ -2,8 +2,10 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
+import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ScreenScope
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelKey
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelModule
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import dagger.Binds
 import dagger.Module
 import dagger.Subcomponent
