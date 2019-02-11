@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.UiThread
-import com.testlab.yevhenbiletskiy.testlab.presentation.App
 import com.testlab.yevhenbiletskiy.testlab.R
+import com.testlab.yevhenbiletskiy.testlab.presentation.App
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
@@ -38,9 +38,12 @@ class MainFragment : Fragment() {
     app().component.getMainFragmentComponent().inject(this)
     viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
-    disposables.add(viewModel.viewState().subscribe { render(it) })
-    // TODO-eugene this one should also unsubscribe (see Kaushik's example)
-    viewModel.intents(intents())
+    disposables.add(
+        viewModel.viewState()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { render(it) }
+    )
+    viewModel.intents(intents()) // TODO-eugene this one should also unsubscribe (see Kaushik's example)
   }
 
   private fun app() = this.activity?.applicationContext as App

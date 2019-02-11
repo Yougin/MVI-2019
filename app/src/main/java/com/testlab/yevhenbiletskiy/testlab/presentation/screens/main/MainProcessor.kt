@@ -26,6 +26,5 @@ class MainProcessor @Inject constructor() : Processor<MainAction, Lce<out MainRe
             )
             .delay(3, TimeUnit.SECONDS)
             .startWith(Lce.Loading())
-            .observeOn(AndroidSchedulers.mainThread())
       }
 }
