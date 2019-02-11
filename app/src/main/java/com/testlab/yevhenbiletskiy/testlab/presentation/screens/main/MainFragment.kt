@@ -39,6 +39,7 @@ class MainFragment : Fragment() {
     viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
     disposables.add(viewModel.viewState().subscribe { render(it) })
+    // TODO-eugene this one should also unsubscribe (see Kaushik's example)
     viewModel.intents(intents())
   }
 
