@@ -29,10 +29,7 @@ class MainViewModel @Inject constructor(
       .map { intentIntoActions(it) }
       .compose(processor.process())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
-      .scan(
-          MainState.idle(),
-          MainReducer.reduce()
-      )
+      .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
       .replay(1)
       .autoConnect(0)
