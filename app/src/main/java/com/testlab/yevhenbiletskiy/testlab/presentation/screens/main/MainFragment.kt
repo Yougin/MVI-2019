@@ -38,12 +38,10 @@ class MainFragment : Fragment() {
     app().component.getMainFragmentComponent().inject(this)
     viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
-    disposables.add(
-        viewModel.viewState()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { render(it) }
+    disposables.addAll(
+        viewModel.viewState().observeOn(AndroidSchedulers.mainThread()).subscribe { render(it) },
+        viewModel.intents(intents())
     )
-    viewModel.intents(intents()) // TODO-eugene this one should also unsubscribe (see Kaushik's example)
   }
 
   private fun app() = this.activity?.applicationContext as App

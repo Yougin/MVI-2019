@@ -5,6 +5,7 @@ import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,9 +20,11 @@ class MainViewModel @Inject constructor(
   private val _viewStateEmitter = stream()
   override fun viewState(): Observable<MainState> = _viewStateEmitter
 
-  override fun intents(intents: Observable<MainIntent>) {
-    intents.subscribe(intentsEmitter)
-  }
+  override fun intents(intents: Observable<MainIntent>): Disposable =
+      intents.subscribe(
+          { intentsEmitter.onNext(it) },
+          { Timber.e(it, "Something went wrong processing intents") }
+      )
 
   private fun stream() = intentsEmitter
       .takeInitialIntentOnlyOnce()
