@@ -20,6 +20,8 @@ class MainViewModel @Inject constructor(
   private val _viewStateEmitter = stream()
   override fun viewState(): Observable<MainState> = _viewStateEmitter
 
+  private var disposable: Disposable? = null
+
   override fun intents(intents: Observable<MainIntent>): Disposable =
       intents.subscribe(
           { intentsEmitter.onNext(it) },
@@ -35,7 +37,7 @@ class MainViewModel @Inject constructor(
       .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
       .replay(1)
-      .autoConnect(0)
+      .autoConnect(0) { disposable = it }
 
   private fun intentIntoActions(it: MainIntent): MainAction =
       when (it) {
@@ -51,4 +53,9 @@ class MainViewModel @Inject constructor(
           )
         }
       }
+
+  override fun onCleared() {
+    super.onCleared()
+    disposable?.dispose()
+  }
 }
