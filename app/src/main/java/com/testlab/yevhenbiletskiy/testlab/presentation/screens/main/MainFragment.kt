@@ -36,6 +36,7 @@ class MainFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
 
     app().component.getMainFragmentComponent().inject(this)
+
     viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
     disposables.addAll(
@@ -44,7 +45,7 @@ class MainFragment : Fragment() {
     )
   }
 
-  private fun app() = this.activity?.applicationContext as App
+  private fun app() = activity?.applicationContext.let { it as App }
 
   private fun intents(): Observable<MainIntent> {
     return Observable.just(MainIntent.InitialIntent)
