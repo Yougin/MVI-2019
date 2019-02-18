@@ -20,10 +20,6 @@ sealed class MainIntent : MviIntent {
   object InitialIntent : MainIntent()
 }
 
-sealed class MainAction {
-  object FetchDataAction : MainAction()
-}
-
 sealed class MainResult {
   data class InitialLoadResult(val text: String) : MainResult()
 }

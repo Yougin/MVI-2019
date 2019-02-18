@@ -11,7 +11,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val processor: Processor<MainAction, Lce<out MainResult>>
+    private val processor: Processor<MainIntent, Lce<out MainResult>>
 ) : ViewModel(),
     MviViewModel<MainIntent, MainState> {
 
@@ -31,18 +31,12 @@ class MainViewModel @Inject constructor(
   private fun stream() = intentsEmitter
       .takeInitialIntentOnlyOnce()
       .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
-      .map { intentIntoActions(it) }
       .compose(processor.process())
       .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
       .scan(MainState.idle(), MainReducer.reduce())
       .distinctUntilChanged()
       .replay(1)
       .autoConnect(0) { disposable = it }
-
-  private fun intentIntoActions(it: MainIntent): MainAction =
-      when (it) {
-        MainIntent.InitialIntent -> MainAction.FetchDataAction
-      }
 
   private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
       compose { upstream ->
