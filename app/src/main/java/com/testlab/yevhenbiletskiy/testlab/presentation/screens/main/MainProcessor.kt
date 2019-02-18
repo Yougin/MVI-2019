@@ -20,6 +20,7 @@ class MainProcessor @Inject constructor(
     }
   }
 
+  // TODO-eugene on error
   private fun Observable<out MainIntent>.onFetchDataAction(): Observable<Lce<out MainResult>> =
       flatMap {
         getMainData()
