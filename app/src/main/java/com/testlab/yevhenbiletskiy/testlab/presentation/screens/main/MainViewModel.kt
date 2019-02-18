@@ -15,11 +15,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
 ) : ViewModel(),
-    MviViewModel<MainIntent, MainState> {
+    MviViewModel<MainIntent, MainState, MainEffect> {
 
   private val intentsEmitter = PublishSubject.create<MainIntent>()
   private val _viewState = BehaviorSubject.create<MainState>()
   override fun viewState(): Observable<MainState> = _viewState
+
+  private val _viewEffect = PublishSubject.create<MainEffect>()
+  override fun viewEffect(): Observable<MainEffect> = _viewEffect
 
   private var disposable: Disposable? = null
 
@@ -32,9 +35,25 @@ class MainViewModel @Inject constructor(
         .publish()
 
     viewChanges.compose(resultToViewState()).subscribe(_viewState)
+    viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
 
     viewChanges.autoConnect(0) { disposable = it }
   }
+
+  private fun resultToViewEffect() =
+      ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
+        upstream.publish { shared ->
+          shared
+              .filter { it is Lce.Content }
+              .cast(Lce.Content::class.java)
+              .map<MainEffect> {
+                when (it.packet) {
+                  is MainResult.InitialLoadResult -> MainEffect.ShowToastEffect("Initial Load completed")
+                  else -> throw IllegalStateException("Unknown MainResult type")
+                }
+              }
+        }
+      }
 
   private fun resultToViewState() =
       ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->

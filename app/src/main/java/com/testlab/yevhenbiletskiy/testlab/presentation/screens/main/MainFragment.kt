@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.testlab.yevhenbiletskiy.testlab.R
 import com.testlab.yevhenbiletskiy.testlab.presentation.App
 import io.reactivex.Observable
@@ -34,15 +35,23 @@ class MainFragment : Fragment() {
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-
     app().component.getMainFragmentComponent().inject(this)
-
     viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+  }
 
+  override fun onResume() {
+    super.onResume()
     disposables.addAll(
         viewModel.viewState().observeOn(AndroidSchedulers.mainThread()).subscribe { render(it) },
+        viewModel.viewEffect().observeOn(AndroidSchedulers.mainThread()).subscribe { renderEffect(it) },
         viewModel.intents(intents())
     )
+  }
+  
+  private fun renderEffect(effect: MainEffect) {
+    when (effect) {
+      is MainEffect.ShowToastEffect -> Toast.makeText(this.context, effect.text, Toast.LENGTH_LONG).show()
+    }
   }
 
   private fun app() = activity?.applicationContext.let { it as App }
