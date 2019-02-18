@@ -8,7 +8,7 @@ interface GetMainData {
   operator fun invoke(): Observable<MainText>
 }
 
-open class GetMainDataUseCase @Inject constructor() : GetMainData {
+class GetMainDataUseCase @Inject constructor() : GetMainData {
 
   override operator fun invoke(): Observable<MainText> {
     return Observable.fromCallable {
