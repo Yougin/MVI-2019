@@ -26,5 +26,5 @@ sealed class MainIntent : MviIntent {
 }
 
 sealed class MainResult {
-  data class InitialLoadResult(val text: String) : MainResult()
+  data class InitialLoadResult(val text: MainText) : MainResult()
 }

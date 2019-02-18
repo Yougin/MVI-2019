@@ -24,7 +24,7 @@ object MainReducer {
     result: Lce.Content<out MainResult>,
     viewState: MainState
   ): MainState = when (result.packet) {
-    is MainResult.InitialLoadResult -> viewState.copy(isLoading = false, text = result.packet.text)
+    is MainResult.InitialLoadResult -> viewState.copy(isLoading = false, text = result.packet.text.value)
   }
 
   private fun onErrorResult(): MainState {
