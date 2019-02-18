@@ -18,6 +18,7 @@ class MainViewModel @Inject constructor(
     MviViewModel<MainIntent, MainState, MainEffect> {
 
   private val intentsEmitter = PublishSubject.create<MainIntent>()
+
   private val _viewState = BehaviorSubject.create<MainState>()
   override fun viewState(): Observable<MainState> = _viewState
 
@@ -40,6 +41,17 @@ class MainViewModel @Inject constructor(
     viewChanges.autoConnect(0) { disposable = it }
   }
 
+  override fun intents(intents: Observable<MainIntent>): Disposable =
+      intents.subscribe(
+          { intentsEmitter.onNext(it) },
+          { Timber.e(it, "Something went wrong processing intents") }
+      )
+
+  private fun resultToViewState() =
+      ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
+        upstream.scan(MainState.idle(), MainReducer.reduce()).distinctUntilChanged()
+      }
+
   private fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
         upstream.publish { shared ->
@@ -54,17 +66,6 @@ class MainViewModel @Inject constructor(
               }
         }
       }
-
-  private fun resultToViewState() =
-      ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
-        upstream.scan(MainState.idle(), MainReducer.reduce()).distinctUntilChanged()
-      }
-
-  override fun intents(intents: Observable<MainIntent>): Disposable =
-      intents.subscribe(
-          { intentsEmitter.onNext(it) },
-          { Timber.e(it, "Something went wrong processing intents") }
-      )
 
 
   private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
