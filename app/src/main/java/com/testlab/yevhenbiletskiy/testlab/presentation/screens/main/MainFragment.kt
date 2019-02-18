@@ -56,4 +56,9 @@ class MainFragment : Fragment() {
     message.text = viewModel.text
   }
 
+  override fun onStop() {
+    super.onStop()
+    disposables.clear()
+  }
+
 }
