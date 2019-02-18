@@ -1,5 +1,6 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
+import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviEffect
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviIntent
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviState

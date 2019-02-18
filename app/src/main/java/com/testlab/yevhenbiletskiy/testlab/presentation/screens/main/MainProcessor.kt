@@ -1,6 +1,8 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
+import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -26,13 +28,3 @@ class MainProcessor @Inject constructor(
         }
 }
 
-class GetMainData @Inject constructor() {
-    operator fun invoke(): Observable<String> {
-        return Observable.fromCallable {
-            Thread.sleep(3000)
-            "Hello World, I'm Main Data."
-        }
-    }
-}
-
-inline class MainText(val value: String)
