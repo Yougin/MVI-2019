@@ -55,8 +55,7 @@ class MainViewModel @Inject constructor(
   private fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
         upstream.publish { shared ->
-          shared
-              .filter { it is Lce.Content }
+          shared.filter { it is Lce.Content }
               .cast(Lce.Content::class.java)
               .map<MainEffect> {
                 when (it.packet) {

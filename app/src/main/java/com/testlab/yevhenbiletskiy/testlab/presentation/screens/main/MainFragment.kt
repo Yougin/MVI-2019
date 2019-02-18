@@ -14,6 +14,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.main_fragment.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment : Fragment() {
@@ -42,27 +43,39 @@ class MainFragment : Fragment() {
   override fun onResume() {
     super.onResume()
     disposables.addAll(
-        viewModel.viewState().observeOn(AndroidSchedulers.mainThread()).subscribe { render(it) },
-        viewModel.viewEffect().observeOn(AndroidSchedulers.mainThread()).subscribe { renderEffect(it) },
+        observeViewState(),
+        observeViewEffects(),
         viewModel.intents(intents())
     )
   }
-  
+
+  private fun observeViewState() =
+      viewModel.viewState()
+          .observeOn(AndroidSchedulers.mainThread())
+          .doOnNext { Timber.d("----- ViewState: $it") }
+          .subscribe { renderState(it) }
+
+  private fun observeViewEffects() =
+      viewModel.viewEffect()
+          .observeOn(AndroidSchedulers.mainThread())
+          .doOnNext { Timber.d("----- ViewEffect: $it") }
+          .subscribe { renderEffect(it) }
+
   private fun renderEffect(effect: MainEffect) {
     when (effect) {
       is MainEffect.ShowToastEffect -> Toast.makeText(this.context, effect.text, Toast.LENGTH_LONG).show()
     }
   }
 
-  private fun app() = activity?.applicationContext.let { it as App }
+  private fun app() = activity?.applicationContext as App
 
   private fun intents(): Observable<MainIntent> {
     return Observable.just(MainIntent.InitialIntent)
   }
 
-  private fun render(viewModel: MainState) {
-    progressBar.visibility = if (viewModel.isLoading) View.VISIBLE else View.GONE
-    message.text = viewModel.text
+  private fun renderState(viewState: MainState) {
+    progressBar.visibility = if (viewState.isLoading) View.VISIBLE else View.GONE
+    message.text = viewState.text
   }
 
   override fun onStop() {
