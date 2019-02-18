@@ -1,7 +1,9 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
+import arrow.core.getOrElse
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -21,7 +23,10 @@ class MainProcessor @Inject constructor(
   private fun Observable<out MainIntent>.onFetchDataAction(): Observable<Lce<out MainResult>> =
       flatMap {
         getMainData()
-            .map<Lce<MainResult>> { Lce.Content(MainResult.InitialLoadResult(it)) }
+            .map<Lce<MainResult>> {
+              val text = it.getOrElse { MainText("") }
+              Lce.Content(MainResult.InitialLoadResult(text))
+            }
             .startWith(Lce.Loading())
             .subscribeOn(Schedulers.io())
       }
