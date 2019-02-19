@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor(
 
   private fun resultToViewState() =
       ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
-        upstream.scan(MainState.idle(), MainReducer.reduce()).distinctUntilChanged()
+        upstream.scan(MainState.idle(), mainReducer()).distinctUntilChanged()
       }
 
   private fun resultToViewEffect() =
