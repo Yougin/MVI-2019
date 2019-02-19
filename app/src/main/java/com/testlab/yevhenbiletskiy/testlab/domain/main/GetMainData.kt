@@ -5,7 +5,6 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 interface GetMainData {
-  // TODO-eugene you should be returning an Option.
   operator fun invoke(): Observable<Option<MainText>>
 }
 
