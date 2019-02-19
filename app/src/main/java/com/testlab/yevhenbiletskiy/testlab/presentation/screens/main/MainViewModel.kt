@@ -69,6 +69,7 @@ class MainViewModel @Inject constructor(
       }
 
 
+  // TODO-eugene generalize for reuse?
   private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
       compose { upstream ->
         upstream.publish { shared ->
