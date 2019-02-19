@@ -10,11 +10,11 @@ import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainProcessor
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
+import com.testlab.yevhenbiletskiy.testlab.getAllEvents
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
-import java.util.concurrent.TimeUnit
 
 class MainViewModelTest {
 
@@ -55,12 +55,12 @@ class MainViewModelTest {
     viewModel.intents(emitter)
 
     emitter.onNext(MainIntent.InitialIntent)
-    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+    observer.getAllEvents()
 
     observer.assertValueCount(2)
 
     emitter.onNext(MainIntent.InitialIntent)
-    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+    observer.getAllEvents()
 
     observer.assertValueCount(2)
   }
@@ -72,7 +72,7 @@ class MainViewModelTest {
     viewModel.intents(emitter)
 
     emitter.onNext(MainIntent.InitialIntent)
-    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+    observer.getAllEvents()
 
     observer.assertValueCount(2)
 
