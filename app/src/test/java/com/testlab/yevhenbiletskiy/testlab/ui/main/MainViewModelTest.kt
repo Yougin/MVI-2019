@@ -49,7 +49,7 @@ class MainViewModelTest {
     )
   }
 
-  @Test fun `should emit state only once for each initial intent`() {
+  @Test fun `should ignore initial intent after the first one`() {
     val observer = viewModel.viewState().test()
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
