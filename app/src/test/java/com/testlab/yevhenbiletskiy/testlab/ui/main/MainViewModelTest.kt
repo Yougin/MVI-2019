@@ -1,22 +1,40 @@
 package com.testlab.yevhenbiletskiy.testlab.ui.main
 
+import arrow.core.Option
 import com.google.common.truth.Truth.assertThat
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.*
+import com.nhaarman.mockitokotlin2.whenever
+import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainProcessor
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import java.util.concurrent.TimeUnit
 
 class MainViewModelTest {
 
-  @Mock private lateinit var processor: MainProcessor
   private lateinit var viewModel: MainViewModel
+  private lateinit var processor: MainProcessor
+
+  @Mock
+  private lateinit var getMainData: GetMainData // TODO-eugene replace with idiomatic mock //  val mainData = mock<GetMainData>()
 
   @Before fun setUp() {
     MockitoAnnotations.initMocks(this)
 
+    assumeGetMainData(returns = "test")
+    processor = MainProcessor(getMainData)
     viewModel = MainViewModel(processor)
+  }
+
+  private fun assumeGetMainData(returns: String) {
+    whenever(getMainData.invoke()).thenReturn(Observable.just(Option.just(MainText(returns))))
   }
 
   @Test fun `should emit state with loading true on initial intent`() {
@@ -35,15 +53,19 @@ class MainViewModelTest {
     )
   }
 
-  @Test fun `should emit state only only once for each initial intent`() {
+  @Test fun `should emit state only once for each initial intent`() {
     val observer = viewModel.viewState().test()
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
 
     emitter.onNext(MainIntent.InitialIntent)
+    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+
     observer.assertValueCount(2)
 
     emitter.onNext(MainIntent.InitialIntent)
+    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+
     observer.assertValueCount(2)
   }
 
@@ -53,14 +75,11 @@ class MainViewModelTest {
     viewModel.intents(emitter)
 
     emitter.onNext(MainIntent.InitialIntent)
+    observer.awaitTerminalEvent(20, TimeUnit.MILLISECONDS)
+
     observer.assertValueCount(2)
 
-    assertThat(observer.values()[1]).isEqualTo(
-        MainState(
-            false,
-            "Hello World!"
-        )
-    )
+    assertThat(observer.values()[1]).isEqualTo(MainState(false, "test"))
   }
 
 }
