@@ -6,13 +6,8 @@ import io.reactivex.functions.BiFunction
 fun mainReducer(): BiFunction<MainState, Lce<out MainResult>, MainState> =
     BiFunction { viewState, result ->
       when (result) {
-        is Lce.Loading -> onLoadingResult(
-            viewState
-        )
-        is Lce.Content -> onContentResult(
-            result,
-            viewState
-        )
+        is Lce.Loading -> onLoadingResult(viewState)
+        is Lce.Content -> onContentResult(result, viewState)
         is Lce.Error -> onErrorResult()
       }
     }
