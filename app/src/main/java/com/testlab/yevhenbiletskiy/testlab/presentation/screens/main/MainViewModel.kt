@@ -35,6 +35,7 @@ class MainViewModel @Inject constructor(
         .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
         .publish()
 
+    // TODO-eugene test view effect too
     viewChanges.compose(resultToViewState()).subscribe(_viewState)
     viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
 
