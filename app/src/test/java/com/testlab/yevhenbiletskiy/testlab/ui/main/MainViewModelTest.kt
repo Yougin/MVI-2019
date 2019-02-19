@@ -24,7 +24,7 @@ class MainViewModelTest {
   private var getMainData = mock<GetMainData>()
 
   @Before fun setUp() {
-    assumeGetMainData(returns = "test")
+    assumeGetMainData(returns = "something")
     processor = MainProcessor(getMainData)
     viewModel = MainViewModel(processor)
   }
@@ -66,6 +66,7 @@ class MainViewModelTest {
   }
 
   @Test fun `should emit state with text on initial intent`() {
+    assumeGetMainData(returns = "test")
     val observer = viewModel.viewState().test()
     val emitter = PublishSubject.create<MainIntent>()
     viewModel.intents(emitter)
