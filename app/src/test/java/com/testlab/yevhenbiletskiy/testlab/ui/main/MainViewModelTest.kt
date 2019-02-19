@@ -2,6 +2,7 @@ package com.testlab.yevhenbiletskiy.testlab.ui.main
 
 import arrow.core.Option
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
 import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
@@ -13,8 +14,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import java.util.concurrent.TimeUnit
 
 class MainViewModelTest {
@@ -22,12 +21,9 @@ class MainViewModelTest {
   private lateinit var viewModel: MainViewModel
   private lateinit var processor: MainProcessor
 
-  @Mock
-  private lateinit var getMainData: GetMainData // TODO-eugene replace with idiomatic mock //  val mainData = mock<GetMainData>()
+  private var getMainData = mock<GetMainData>()
 
   @Before fun setUp() {
-    MockitoAnnotations.initMocks(this)
-
     assumeGetMainData(returns = "test")
     processor = MainProcessor(getMainData)
     viewModel = MainViewModel(processor)
