@@ -1,4 +1,4 @@
-package com.testlab.yevhenbiletskiy.testlab.domain.main
+package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain
 
 import arrow.core.Option
 import io.reactivex.Observable

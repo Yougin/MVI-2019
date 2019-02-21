@@ -4,15 +4,14 @@ import arrow.core.Option
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
-import com.testlab.yevhenbiletskiy.testlab.domain.main.MainText
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.MainText
 import com.testlab.yevhenbiletskiy.testlab.getAllEvents
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainProcessor
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
 import io.reactivex.Observable
-import io.reactivex.internal.operators.observable.ObservableError
 import io.reactivex.observers.TestObserver
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before

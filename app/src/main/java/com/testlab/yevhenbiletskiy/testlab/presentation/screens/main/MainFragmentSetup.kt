@@ -2,8 +2,8 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
-import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainData
-import com.testlab.yevhenbiletskiy.testlab.domain.main.GetMainDataUseCase
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.GetMainDataUseCase
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ScreenScope
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelKey
 import com.testlab.yevhenbiletskiy.testlab.presentation.di.viewmodel.ViewModelModule
