@@ -19,6 +19,7 @@ private fun onContentResult(
     viewState: MainState
 ): MainState = when (result.packet) {
   is MainResult.InitialLoadResult -> viewState.copy(isLoading = false, text = result.packet.text.value)
+  is MainResult.LoginResult -> viewState.copy(userSession = result.packet.userSession.userSession)
 }
 
 private fun onErrorResult(): MainState {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.jakewharton.rxbinding3.view.clicks
 import com.testlab.yevhenbiletskiy.testlab.R
 import com.testlab.yevhenbiletskiy.testlab.presentation.App
 import io.reactivex.Observable
@@ -70,12 +71,15 @@ class MainFragment : Fragment() {
   private fun app() = activity?.applicationContext as App
 
   private fun intents(): Observable<MainIntent> {
-    return Observable.just(MainIntent.InitialIntent)
+    return Observable.merge(
+        Observable.just(MainIntent.InitialIntent),
+        loginButton.clicks().map { MainIntent.LoginIntent }
+    )
   }
 
   private fun renderState(viewState: MainState) {
     progressBar.visibility = if (viewState.isLoading) View.VISIBLE else View.GONE
-    message.text = viewState.text
+    message.text = viewState.userSession?.let { it } ?: viewState.text
   }
 
   override fun onStop() {

@@ -49,22 +49,19 @@ class MainViewModel @Inject constructor(
           { Timber.e(it, "Something went wrong processing intents") }
       )
 
+  // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
   private fun resultToViewState() =
       ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
         upstream.scan(MainState.idle(), mainReducer()).distinctUntilChanged()
       }
 
+  // TODO-eugene show Another Toast for button click
   private fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
         upstream.publish { shared ->
-          shared.filter { it is Lce.Content }
+          shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult}
               .cast(Lce.Content::class.java)
-              .map<MainEffect> {
-                when (it.packet) {
-                  is MainResult.InitialLoadResult -> MainEffect.ShowToastEffect("Initial Load completed")
-                  else -> throw IllegalStateException("Unknown MainResult type")
-                }
-              }
+              .map<MainEffect> { MainEffect.ShowToastEffect("Initial Load completed") }
         }
       }
 

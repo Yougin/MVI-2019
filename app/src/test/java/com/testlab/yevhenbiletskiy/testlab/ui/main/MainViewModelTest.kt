@@ -4,17 +4,18 @@ import arrow.core.Option
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.GetMainData
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.MainText
 import com.testlab.yevhenbiletskiy.testlab.getAllEvents
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainIntent
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainProcessor
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainViewModel
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.GetMainData
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.MainText
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import io.reactivex.subjects.PublishSubject
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 class MainViewModelTest {
@@ -84,7 +85,27 @@ class MainViewModelTest {
     observer.getAllEvents()
 
     observer.assertValueCount(2)
+    assertThat(observer.values()[0]).isEqualTo(MainState(true, ""))
     assertThat(observer.values()[1]).isEqualTo(MainState(false, ""))
+  }
+
+  // ----------------------------------------------------------------------------------------
+
+  @Test fun `should the pipeline stay alive after Exception thrown from Intention side`() {
+    emitter.onNext(MainIntent.InitialIntent)
+    observer.getAllEvents()
+
+    observer.assertValueCount(2)
+
+    emitter.onError(IllegalStateException("Oh My!"))
+    observer.getAllEvents()
+
+    observer.assertValueCount(2)
+
+    emitter.onNext(MainIntent.LoginIntent)
+    observer.getAllEvents()
+
+    observer.assertValueCount(3)
   }
 
 }
