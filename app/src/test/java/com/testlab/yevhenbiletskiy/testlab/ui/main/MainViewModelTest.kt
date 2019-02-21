@@ -89,23 +89,4 @@ class MainViewModelTest {
     assertThat(observer.values()[1]).isEqualTo(MainState(false, ""))
   }
 
-  // ----------------------------------------------------------------------------------------
-
-  @Test fun `should the pipeline stay alive after Exception thrown from Intention side`() {
-    emitter.onNext(MainIntent.InitialIntent)
-    observer.getAllEvents()
-
-    observer.assertValueCount(2)
-
-    emitter.onError(IllegalStateException("Oh My!"))
-    observer.getAllEvents()
-
-    observer.assertValueCount(2)
-
-    emitter.onNext(MainIntent.LoginIntent)
-    observer.getAllEvents()
-
-    observer.assertValueCount(3)
-  }
-
 }
