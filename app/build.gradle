@@ -38,6 +38,8 @@ dependencies {
   kapt 'com.google.dagger:dagger-android-processor:2.16'
   kapt 'com.google.dagger:dagger-compiler:2.16'
 
+  implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-rc01'
+
   implementation 'com.jakewharton.timber:timber:4.7.1'
 
   testImplementation 'junit:junit:4.12'
