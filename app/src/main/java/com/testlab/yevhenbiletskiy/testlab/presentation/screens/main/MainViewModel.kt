@@ -1,14 +1,14 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
-import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.BaseViewModel
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.ObservableTransformer
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : MviViewModel<MainIntent, MainResult, MainState, MainViewEffect>(
+) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>(
     processor,
     MainIntent.InitialIntent::class.java
 ) {

@@ -13,7 +13,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-abstract class MviViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
+abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
 constructor(
     processor: Processor<I, Lce<out R>>,
     initialIntent: Class<out I>
