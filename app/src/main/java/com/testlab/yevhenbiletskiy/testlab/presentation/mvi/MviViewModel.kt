@@ -19,14 +19,13 @@ constructor(
     initialIntent: Class<out I>
 ) : ViewModel() {
 
-  private val intentsEmitter = PublishSubject.create<I>()
-
   private val _viewState = BehaviorSubject.create<S>()
   fun viewState(): Observable<S> = _viewState
 
   private val _viewEffect = PublishSubject.create<E>()
   fun viewEffect(): Observable<E> = _viewEffect
 
+  private val intentsEmitter by lazy { PublishSubject.create<I>() }
   private val createPipeline by lazy {
     val viewChanges = intentsEmitter
         .takeOnlyOnce(initialIntent)
@@ -43,14 +42,12 @@ constructor(
   }
 
   // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
-  private fun resultToViewState(): ObservableTransformer<Lce<out R>, S> =
-      ObservableTransformer { upstream ->
-        upstream.scan(getDefaultState(), getReducer()).distinctUntilChanged()
+  abstract val reducer: BiFunction<S, Lce<out R>, S>
+  abstract val defaultState: S
+  private fun resultToViewState() =
+      ObservableTransformer<Lce<out R>, S> {
+        it.scan(defaultState, reducer).distinctUntilChanged()
       }
-
-  abstract fun getReducer(): BiFunction<S, Lce<out R>, S>
-
-  abstract fun getDefaultState(): S
 
   abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
 

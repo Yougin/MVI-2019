@@ -6,7 +6,6 @@ import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
 import io.reactivex.ObservableTransformer
 import javax.inject.Inject
 
-// TODO-eugene consider moving things up like Roxie does
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
 ) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(
@@ -14,9 +13,9 @@ class MainViewModel @Inject constructor(
     MainIntent.InitialIntent::class.java
 ) {
 
-  override fun getDefaultState() = MainState.idle()
+  override val defaultState get() = MainState.idle()
 
-  override fun getReducer() = mainReducer()
+  override val reducer get() = mainReducer()
 
   // TODO-eugene show Another Toast for button click
   override fun resultToViewEffect() =
