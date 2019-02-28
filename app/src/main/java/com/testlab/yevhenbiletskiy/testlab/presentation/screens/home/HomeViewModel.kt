@@ -7,7 +7,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(): ViewModel(), MviViewModel<HomeIntent, HomeState, HomeEffect> {
+class HomeViewModel @Inject constructor(
+
+) : ViewModel(),
+    MviViewModel<HomeIntent, HomeState, HomeEffect> {
 
   override fun intents(intents: Observable<HomeIntent>): Disposable {
     return Observable.just("compile").subscribe()
