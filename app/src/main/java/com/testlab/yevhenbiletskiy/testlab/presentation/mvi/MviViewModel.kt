@@ -1,3 +1,5 @@
+@file:Suppress("PropertyName")
+
 package com.testlab.yevhenbiletskiy.testlab.presentation.mvi
 
 import android.arch.lifecycle.ViewModel
