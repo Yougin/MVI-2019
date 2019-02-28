@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.utils.takeOnlyOnce
 import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -25,7 +26,7 @@ constructor(
   private val _viewEffect = PublishSubject.create<E>()
   fun viewEffect(): Observable<E> = _viewEffect
 
-  init {
+  private val createPipeline by lazy {
     val viewChanges = intentsEmitter
         .takeOnlyOnce(initialIntent)
         .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
@@ -34,18 +35,24 @@ constructor(
         .publish()
 
     // TODO-eugene test view effect too
-//        viewChanges.compose(resultToViewState()).subscribe(_viewState)
-//        viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
+    viewChanges.compose(resultToViewState()).subscribe(_viewState)
+    viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
 
     viewChanges.autoConnect(0) { disposable = it }
   }
 
+  abstract fun resultToViewState(): ObservableTransformer<Lce<out R>, S>
 
-  fun intents(intents: Observable<I>): Disposable =
-      intents.subscribe(
-          { intentsEmitter.onNext(it) },
-          { Timber.e(it, "Something went wrong processing intents") }
-      )
+  abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
+
+
+  fun intents(intents: Observable<I>): Disposable {
+    createPipeline
+    return intents.subscribe(
+        { intentsEmitter.onNext(it) },
+        { Timber.e(it, "Something went wrong processing intents") }
+    )
+  }
 
   private var disposable: Disposable? = null
   override fun onCleared() {

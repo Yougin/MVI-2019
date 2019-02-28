@@ -12,13 +12,13 @@ class MainViewModel @Inject constructor(
 ) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(processor, MainIntent::class.java) {
 
   // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
-  private fun resultToViewState() =
+  override fun resultToViewState() =
       ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
         upstream.scan(MainState.idle(), mainReducer()).distinctUntilChanged()
       }
 
   // TODO-eugene show Another Toast for button click
-  private fun resultToViewEffect() =
+  override fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
         upstream.publish { shared ->
           shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult }
