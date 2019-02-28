@@ -15,7 +15,7 @@ import timber.log.Timber
 abstract class MviViewModel<I : MviIntent, S : MviState, E : MviEffect, R : MviResult>
 constructor(
     processor: Processor<I, Lce<out R>>,
-    initialIntent: Class<I>
+    initialIntent: Class<out I>
 ) : ViewModel() {
 
   private val intentsEmitter = PublishSubject.create<I>()

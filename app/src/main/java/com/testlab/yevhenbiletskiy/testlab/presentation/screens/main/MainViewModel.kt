@@ -9,7 +9,10 @@ import javax.inject.Inject
 // TODO-eugene consider moving things up like Roxie does
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(processor, MainIntent::class.java) {
+) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(
+    processor,
+    MainIntent.InitialIntent::class.java
+) {
 
   // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
   override fun resultToViewState() =
