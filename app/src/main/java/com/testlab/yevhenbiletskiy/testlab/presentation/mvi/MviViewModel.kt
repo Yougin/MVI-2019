@@ -24,4 +24,10 @@ abstract class MviViewModel<I : MviIntent, S : MviState, E : MviEffect> : ViewMo
           { intentsEmitter.onNext(it) },
           { Timber.e(it, "Something went wrong processing intents") }
       )
+
+  protected var disposable: Disposable? = null
+  override fun onCleared() {
+    super.onCleared()
+    disposable?.dispose()
+  }
 }

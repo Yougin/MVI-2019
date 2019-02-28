@@ -16,8 +16,6 @@ class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
 ) : MviViewModel<MainIntent, MainState, MainEffect>() {
 
-  private var disposable: Disposable? = null
-
   init {
     val viewChanges = intentsEmitter
         .takeInitialIntentOnlyOnce()
@@ -61,8 +59,4 @@ class MainViewModel @Inject constructor(
         }
       }
 
-  override fun onCleared() {
-    super.onCleared()
-    disposable?.dispose()
-  }
 }
