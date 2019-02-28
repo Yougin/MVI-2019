@@ -3,11 +3,9 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
+import com.testlab.yevhenbiletskiy.testlab.presentation.utils.takeInitialIntentOnlyOnce
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,7 +16,7 @@ class MainViewModel @Inject constructor(
 
   init {
     val viewChanges = intentsEmitter
-        .takeInitialIntentOnlyOnce()
+        .takeInitialIntentOnlyOnce(MainIntent.InitialIntent::class.java)
         .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
         .compose(processor.process())
         .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
@@ -44,18 +42,6 @@ class MainViewModel @Inject constructor(
           shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult }
               .cast(Lce.Content::class.java)
               .map<MainEffect> { MainEffect.ShowToastEffect("Initial Load completed") }
-        }
-      }
-
-
-  // TODO-eugene generalize for reuse?
-  private fun Observable<MainIntent>.takeInitialIntentOnlyOnce() =
-      compose { upstream ->
-        upstream.publish { shared ->
-          Observable.merge(
-              shared.ofType(MainIntent.InitialIntent::class.java).take(1),
-              shared.filter { it !is MainIntent.InitialIntent }
-          )
         }
       }
 
