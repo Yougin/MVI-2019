@@ -19,16 +19,6 @@ constructor(
     initialIntent: Class<out I>
 ) : ViewModel() {
 
-  private val _viewState = BehaviorSubject.create<S>()
-  /** Returns an Observable which emits recent MviState **/
-  fun viewState(): Observable<S> = _viewState
-
-  private val _viewEffect = PublishSubject.create<E>()
-  /** Returns an Observable which emits MviEffect **/
-  fun viewEffect(): Observable<E> = _viewEffect
-
-  private val intentsEmitter = PublishSubject.create<I>()
-
   /** Use to supply Intents from View **/
   fun intents(intents: Observable<I>): Disposable {
     createPipeline
@@ -37,6 +27,27 @@ constructor(
         { Timber.e(it, "Something went wrong processing intents") }
     )
   }
+
+  /** Use to return a Reducer **/
+  abstract val reducer: BiFunction<S, Lce<out R>, S>
+  /** Define a default view state **/
+  abstract val defaultState: S
+
+  /** Use to translate results to View Effect **/
+  abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
+
+  /** Returns an Observable which emits recent MviState **/
+  fun viewState(): Observable<S> = _viewState
+
+  /** Returns an Observable which emits MviEffect **/
+  fun viewEffect(): Observable<E> = _viewEffect
+
+  // ...
+
+  private val intentsEmitter = PublishSubject.create<I>()
+  private val _viewState = BehaviorSubject.create<S>()
+  private val _viewEffect = PublishSubject.create<E>()
+  private var disposable: Disposable? = null
 
   private val createPipeline by lazy {
     val viewChanges = intentsEmitter
@@ -53,22 +64,14 @@ constructor(
     viewChanges.autoConnect(0) { disposable = it }
   }
 
-  // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
-  /** Use to return a Reducer **/
-  abstract val reducer: BiFunction<S, Lce<out R>, S>
-  /** Define a default view state **/
-  abstract val defaultState: S
-
   private fun resultToViewState() =
       ObservableTransformer<Lce<out R>, S> {
         it.scan(defaultState, reducer).distinctUntilChanged()
       }
 
-  abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
-
-  private var disposable: Disposable? = null
   override fun onCleared() {
     super.onCleared()
     disposable?.dispose()
   }
+
 }
