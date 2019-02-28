@@ -16,9 +16,6 @@ class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
 ) : MviViewModel<MainIntent, MainState, MainEffect>() {
 
-  private val _viewState = BehaviorSubject.create<MainState>()
-  override fun viewState(): Observable<MainState> = _viewState
-
   private val _viewEffect = PublishSubject.create<MainEffect>()
   override fun viewEffect(): Observable<MainEffect> = _viewEffect
 
