@@ -9,12 +9,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
 
-) : ViewModel(),
-    MviViewModel<HomeIntent, HomeState, HomeEffect> {
-
-  override fun intents(intents: Observable<HomeIntent>): Disposable {
-    return Observable.just("compile").subscribe()
-  }
+) : MviViewModel<HomeIntent, HomeState, HomeEffect>() {
 
   override fun viewState(): Observable<HomeState> {
     return Observable.just(HomeState.idle())

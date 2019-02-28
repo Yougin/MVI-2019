@@ -1,6 +1,5 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
-import android.arch.lifecycle.ViewModel
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
@@ -15,10 +14,7 @@ import javax.inject.Inject
 // TODO-eugene consider moving things up like Roxie does
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : ViewModel(),
-    MviViewModel<MainIntent, MainState, MainEffect> {
-
-  private val intentsEmitter = PublishSubject.create<MainIntent>()
+) : MviViewModel<MainIntent, MainState, MainEffect>() {
 
   private val _viewState = BehaviorSubject.create<MainState>()
   override fun viewState(): Observable<MainState> = _viewState
@@ -43,12 +39,6 @@ class MainViewModel @Inject constructor(
     viewChanges.autoConnect(0) { disposable = it }
   }
 
-  override fun intents(intents: Observable<MainIntent>): Disposable =
-      intents.subscribe(
-          { intentsEmitter.onNext(it) },
-          { Timber.e(it, "Something went wrong processing intents") }
-      )
-
   // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
   private fun resultToViewState() =
       ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
@@ -59,7 +49,7 @@ class MainViewModel @Inject constructor(
   private fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
         upstream.publish { shared ->
-          shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult}
+          shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult }
               .cast(Lce.Content::class.java)
               .map<MainEffect> { MainEffect.ShowToastEffect("Initial Load completed") }
         }
