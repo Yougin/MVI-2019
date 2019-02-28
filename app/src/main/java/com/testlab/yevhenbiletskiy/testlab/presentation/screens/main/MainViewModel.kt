@@ -14,11 +14,9 @@ class MainViewModel @Inject constructor(
     MainIntent.InitialIntent::class.java
 ) {
 
-  // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
-  override fun resultToViewState() =
-      ObservableTransformer<Lce<out MainResult>, MainState> { upstream ->
-        upstream.scan(MainState.idle(), mainReducer()).distinctUntilChanged()
-      }
+  override fun getDefaultState() = MainState.idle()
+
+  override fun getReducer() = mainReducer()
 
   // TODO-eugene show Another Toast for button click
   override fun resultToViewEffect() =

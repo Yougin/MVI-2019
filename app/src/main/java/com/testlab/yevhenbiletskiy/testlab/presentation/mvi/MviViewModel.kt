@@ -8,6 +8,7 @@ import com.testlab.yevhenbiletskiy.testlab.presentation.utils.takeOnlyOnce
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -41,10 +42,17 @@ constructor(
     viewChanges.autoConnect(0) { disposable = it }
   }
 
-  abstract fun resultToViewState(): ObservableTransformer<Lce<out R>, S>
+  // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
+  private fun resultToViewState(): ObservableTransformer<Lce<out R>, S> =
+      ObservableTransformer { upstream ->
+        upstream.scan(getDefaultState(), getReducer()).distinctUntilChanged()
+      }
+
+  abstract fun getReducer(): BiFunction<S, Lce<out R>, S>
+
+  abstract fun getDefaultState(): S
 
   abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
-
 
   fun intents(intents: Observable<I>): Disposable {
     createPipeline
