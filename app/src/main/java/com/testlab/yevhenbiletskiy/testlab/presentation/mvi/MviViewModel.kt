@@ -28,21 +28,22 @@ constructor(
     )
   }
 
-  /** Use to return a Reducer **/
-  abstract val reducer: BiFunction<S, Lce<out R>, S>
-  /** Define a default view state **/
-  abstract val defaultState: S
-
-  /** Use to translate results to View Effect **/
-  abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
-
   /** Returns an Observable which emits recent MviState **/
   fun viewState(): Observable<S> = _viewState
 
   /** Returns an Observable which emits MviEffect **/
   fun viewEffect(): Observable<E> = _viewEffect
 
-  // ...
+  /** Implement to return a Reducer **/
+  protected abstract val reducer: BiFunction<S, Lce<out R>, S>
+
+  /** Implement to get a default/initial view state **/
+  protected abstract val defaultState: S
+
+  /** Implement to translate results to View Effect **/
+  protected abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
+
+
 
   private val intentsEmitter = PublishSubject.create<I>()
   private val _viewState = BehaviorSubject.create<S>()
