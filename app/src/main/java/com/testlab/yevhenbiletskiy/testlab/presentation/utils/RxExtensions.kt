@@ -2,7 +2,7 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.utils
 
 import io.reactivex.Observable
 
-fun <T, U: T> Observable<T>.takeInitialIntentOnlyOnce(clazz: Class<U>)
+fun <T, U: T> Observable<T>.takeOnlyOnce(clazz: Class<U>)
     : Observable<T> =
     compose { upstream ->
       upstream.publish { shared ->

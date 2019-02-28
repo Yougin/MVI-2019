@@ -3,31 +3,13 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviViewModel
 import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Processor
-import com.testlab.yevhenbiletskiy.testlab.presentation.utils.takeInitialIntentOnlyOnce
-import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import timber.log.Timber
 import javax.inject.Inject
 
 // TODO-eugene consider moving things up like Roxie does
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : MviViewModel<MainIntent, MainState, MainEffect>() {
-
-  init {
-    val viewChanges = intentsEmitter
-        .takeInitialIntentOnlyOnce(MainIntent.InitialIntent::class.java)
-        .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
-        .compose(processor.process())
-        .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
-        .publish()
-
-    // TODO-eugene test view effect too
-    viewChanges.compose(resultToViewState()).subscribe(_viewState)
-    viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
-
-    viewChanges.autoConnect(0) { disposable = it }
-  }
+) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(processor, MainIntent::class.java) {
 
   // TODO-eugene Kaushik does viewState.value ?: MSMovieViewState()
   private fun resultToViewState() =
