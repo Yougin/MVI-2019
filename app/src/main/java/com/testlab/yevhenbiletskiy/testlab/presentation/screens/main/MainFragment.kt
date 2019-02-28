@@ -62,9 +62,9 @@ class MainFragment : Fragment() {
           .doOnNext { Timber.d("----- ViewEffect: $it") }
           .subscribe { renderEffect(it) }
 
-  private fun renderEffect(effect: MainEffect) {
+  private fun renderEffect(effect: MainViewEffect) {
     when (effect) {
-      is MainEffect.ShowToastEffect -> Toast.makeText(this.context, effect.text, Toast.LENGTH_LONG).show()
+      is MainViewEffect.ShowToastViewEffect -> Toast.makeText(this.context, effect.text, Toast.LENGTH_LONG).show()
     }
   }
 

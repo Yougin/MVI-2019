@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : MviViewModel<MainIntent, MainState, MainEffect, MainResult>(
+) : MviViewModel<MainIntent, MainResult, MainState, MainViewEffect>(
     processor,
     MainIntent.InitialIntent::class.java
 ) {
@@ -19,11 +19,11 @@ class MainViewModel @Inject constructor(
 
   // TODO-eugene show Another Toast for button click
   override fun resultToViewEffect() =
-      ObservableTransformer<Lce<out MainResult>, MainEffect> { upstream ->
+      ObservableTransformer<Lce<out MainResult>, MainViewEffect> { upstream ->
         upstream.publish { shared ->
           shared.filter { it is Lce.Content && it.packet is MainResult.InitialLoadResult }
               .cast(Lce.Content::class.java)
-              .map<MainEffect> { MainEffect.ShowToastEffect("Initial Load completed") }
+              .map<MainViewEffect> { MainViewEffect.ShowToastViewEffect("Initial Load completed") }
         }
       }
 

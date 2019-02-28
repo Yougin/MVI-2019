@@ -1,9 +1,9 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 
-import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviEffect
-import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviIntent
-import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviResult
-import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.MviState
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.ViewEffect
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Intent
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.Result
+import com.testlab.yevhenbiletskiy.testlab.presentation.mvi.ViewState
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.MainText
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.domain.UserSession
 
@@ -11,7 +11,7 @@ data class MainState(
     val isLoading: Boolean = false,
     val text: String = "",
     val userSession: String? = null
-) : MviState {
+) : ViewState {
 
   companion object {
     fun idle() = MainState(
@@ -21,16 +21,16 @@ data class MainState(
   }
 }
 
-sealed class MainEffect : MviEffect {
-  data class ShowToastEffect(val text: String) : MainEffect()
+sealed class MainViewEffect : ViewEffect {
+  data class ShowToastViewEffect(val text: String) : MainViewEffect()
 }
 
-sealed class MainIntent : MviIntent {
+sealed class MainIntent : Intent {
   object InitialIntent : MainIntent()
   object LoginIntent : MainIntent()
 }
 
-sealed class MainResult: MviResult {
+sealed class MainResult: Result {
   data class InitialLoadResult(val text: MainText) : MainResult()
   data class LoginResult(val userSession: UserSession) : MainResult()
 }

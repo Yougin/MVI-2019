@@ -13,7 +13,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-abstract class MviViewModel<I : MviIntent, S : MviState, E : MviEffect, R : MviResult>
+abstract class MviViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
 constructor(
     processor: Processor<I, Lce<out R>>,
     initialIntent: Class<out I>
@@ -28,10 +28,10 @@ constructor(
     )
   }
 
-  /** Returns an Observable which emits recent MviState **/
+  /** Returns an Observable which emits recent ViewState **/
   fun viewState(): Observable<S> = _viewState
 
-  /** Returns an Observable which emits MviEffect **/
+  /** Returns an Observable which emits ViewEffect **/
   fun viewEffect(): Observable<E> = _viewEffect
 
   /** Implement to return a Reducer **/
@@ -40,7 +40,7 @@ constructor(
   /** Implement to get a default/initial view state **/
   protected abstract val defaultState: S
 
-  /** Implement to translate results to View Effect **/
+  /** Implement to translate results to View ViewEffect **/
   protected abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
 
 
@@ -55,7 +55,7 @@ constructor(
         .takeOnlyOnce(initialIntent)
         .doOnNext { Timber.d("----- Intent: ${it.javaClass.simpleName}") }
         .compose(processor.process())
-        .doOnNext { Timber.d("----- MviResult: ${it.javaClass.simpleName}") }
+        .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
         .publish()
 
     // TODO-eugene test view effect too
