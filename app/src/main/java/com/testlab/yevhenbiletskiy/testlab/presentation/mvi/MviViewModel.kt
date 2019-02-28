@@ -1,6 +1,7 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.mvi
 
 import android.arch.lifecycle.ViewModel
+import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainEffect
 import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -12,10 +13,11 @@ abstract class MviViewModel<I : MviIntent, S : MviState, E : MviEffect> : ViewMo
 
   protected val intentsEmitter = PublishSubject.create<I>()
 
-  protected val _viewState = BehaviorSubject.create<MainState>()
-  fun viewState(): Observable<MainState> = _viewState
+  protected val _viewState = BehaviorSubject.create<S>()
+  fun viewState(): Observable<S> = _viewState
 
-  abstract fun viewEffect(): Observable<E>
+  protected val _viewEffect = PublishSubject.create<E>()
+  fun viewEffect(): Observable<E> = _viewEffect
 
   fun intents(intents: Observable<I>): Disposable =
       intents.subscribe(

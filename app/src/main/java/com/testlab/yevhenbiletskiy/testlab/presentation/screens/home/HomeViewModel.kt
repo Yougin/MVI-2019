@@ -7,10 +7,4 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
 
-) : MviViewModel<HomeIntent, HomeState, HomeEffect>() {
-
-  override fun viewEffect(): Observable<HomeEffect> {
-    return PublishSubject.create()
-  }
-
-}
+) : MviViewModel<HomeIntent, HomeState, HomeEffect>()
