@@ -3,8 +3,6 @@
 package com.testlab.yevhenbiletskiy.testlab.presentation.mvi
 
 import android.arch.lifecycle.ViewModel
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainEffect
-import com.testlab.yevhenbiletskiy.testlab.presentation.screens.main.MainState
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
