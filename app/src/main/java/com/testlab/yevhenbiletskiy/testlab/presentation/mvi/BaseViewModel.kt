@@ -15,9 +15,7 @@ import timber.log.Timber
 
 abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
 constructor(
-    processor: Processor<I, Lce<out R>>,
-    // TODO-eugene you don't need to pass it using constructor, make the derived class to supply it
-    initialIntent: Class<out I>
+    processor: Processor<I, Lce<out R>>
 ) : ViewModel() {
 
   /** Use to supply Intents from View **/
@@ -40,6 +38,9 @@ constructor(
 
   /** Implement to get a default/initial view state **/
   protected abstract val defaultState: S
+
+  /** Implement to get an Initial Intent **/
+  protected abstract val initialIntent: Class<out I>
 
   /** Implement to translate results to View ViewEffect **/
   protected abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>

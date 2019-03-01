@@ -8,14 +8,14 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
-) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>(
-    processor,
-    MainIntent.InitialIntent::class.java
-) {
+) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>(processor) {
 
   override val defaultState get() = MainState.idle()
 
   override val reducer get() = mainReducer()
+
+  override val initialIntent: Class<out MainIntent>
+    get() = MainIntent.InitialIntent::class.java
 
   // TODO-eugene show Another Toast for button click
   override fun resultToViewEffect() =
