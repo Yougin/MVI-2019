@@ -20,6 +20,7 @@ class MainViewModel @Inject constructor(
     get() = MainIntent.InitialIntent::class.java
 
   // TODO-eugene show Another Toast for button click
+  // TODO-eugene publish in the parent 
   override fun resultToViewEffect() =
       ObservableTransformer<Lce<out MainResult>, MainViewEffect> { upstream ->
         upstream.publish { shared ->
