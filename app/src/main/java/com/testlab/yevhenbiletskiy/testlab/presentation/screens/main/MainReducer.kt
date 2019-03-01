@@ -3,6 +3,8 @@ package com.testlab.yevhenbiletskiy.testlab.presentation.screens.main
 import com.testlab.yevhenbiletskiy.testlab.domain.Lce
 import io.reactivex.functions.BiFunction
 
+// TODO-eugene it doesn't have to be a BiFunction, see what Roxie does:
+// https://github.com/ww-tech/roxie/blob/master/roxie/src/main/kotlin/com/ww/roxie/Reducer.kt 
 fun mainReducer(): BiFunction<MainState, Lce<out MainResult>, MainState> =
     BiFunction { viewState, result ->
       when (result) {
