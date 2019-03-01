@@ -7,12 +7,14 @@ import io.reactivex.ObservableTransformer
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    processor: Processor<MainIntent, Lce<out MainResult>>
-) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>(processor) {
+    private val mainProcessor: Processor<MainIntent, Lce<out MainResult>>
+) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>() {
 
-  override val initialState get() = MainState.idle()
+  override val processor: Processor<MainIntent, Lce<out MainResult>> get() = mainProcessor
 
   override val reducer get() = mainReducer()
+
+  override val initialState get() = MainState.idle()
 
   override val initialIntent: Class<out MainIntent>
     get() = MainIntent.InitialIntent::class.java
@@ -26,5 +28,4 @@ class MainViewModel @Inject constructor(
               .map<MainViewEffect> { MainViewEffect.ShowToastViewEffect("Initial Load completed") }
         }
       }
-
 }

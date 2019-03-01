@@ -13,10 +13,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
-constructor(
-    processor: Processor<I, Lce<out R>>
-) : ViewModel() {
+abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect> : ViewModel() {
 
   /** Use to supply Intents from View **/
   fun intents(intents: Observable<I>): Disposable {
@@ -33,13 +30,16 @@ constructor(
   /** Returns an Observable which emits ViewEffect **/
   val viewEffect: Observable<E> get() = _viewEffect
 
-  /** Implement to return a Reducer **/
+  /** Implement to return Processor */
+  protected abstract val processor: Processor<I, Lce<out R>>
+
+  /** Implement to return Reducer **/
   protected abstract val reducer: BiFunction<S, Lce<out R>, S>
 
-  /** Implement to get a initial view state **/
+  /** Implement to get initial view state **/
   protected abstract val initialState: S
 
-  /** Implement to get an Initial Intent **/
+  /** Implement to get Initial Intent **/
   protected abstract val initialIntent: Class<out I>
 
   /** Implement to translate results to View ViewEffect **/
