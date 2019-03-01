@@ -10,7 +10,7 @@ class MainViewModel @Inject constructor(
     processor: Processor<MainIntent, Lce<out MainResult>>
 ) : BaseViewModel<MainIntent, MainResult, MainState, MainViewEffect>(processor) {
 
-  override val defaultState get() = MainState.idle()
+  override val initialState get() = MainState.idle()
 
   override val reducer get() = mainReducer()
 

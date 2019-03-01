@@ -36,8 +36,8 @@ constructor(
   /** Implement to return a Reducer **/
   protected abstract val reducer: BiFunction<S, Lce<out R>, S>
 
-  /** Implement to get a default/initial view state **/
-  protected abstract val defaultState: S
+  /** Implement to get a initial view state **/
+  protected abstract val initialState: S
 
   /** Implement to get an Initial Intent **/
   protected abstract val initialIntent: Class<out I>
@@ -68,7 +68,7 @@ constructor(
 
   private fun resultToViewState() =
       ObservableTransformer<Lce<out R>, S> {
-        it.scan(defaultState, reducer).distinctUntilChanged()
+        it.scan(initialState, reducer).distinctUntilChanged()
       }
 
   override fun onCleared() {
