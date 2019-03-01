@@ -27,6 +27,7 @@ constructor(
     )
   }
 
+  // TODO-eugene these two could be properties
   /** Returns an Observable which emits recent ViewState **/
   fun viewState(): Observable<S> = _viewState
 
