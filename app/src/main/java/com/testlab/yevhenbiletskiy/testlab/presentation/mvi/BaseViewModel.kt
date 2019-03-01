@@ -27,12 +27,11 @@ constructor(
     )
   }
 
-  // TODO-eugene these two could be properties
   /** Returns an Observable which emits recent ViewState **/
-  fun viewState(): Observable<S> = _viewState
+  val viewState: Observable<S> get() = _viewState
 
   /** Returns an Observable which emits ViewEffect **/
-  fun viewEffect(): Observable<E> = _viewEffect
+  val viewEffect: Observable<E> get() = _viewEffect
 
   /** Implement to return a Reducer **/
   protected abstract val reducer: BiFunction<S, Lce<out R>, S>
@@ -45,7 +44,6 @@ constructor(
 
   /** Implement to translate results to View ViewEffect **/
   protected abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
-
 
 
   private val intentsEmitter = PublishSubject.create<I>()

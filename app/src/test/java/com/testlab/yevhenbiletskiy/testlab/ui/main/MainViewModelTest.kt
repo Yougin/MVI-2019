@@ -32,7 +32,7 @@ class MainViewModelTest {
     processor = MainProcessor(getMainData)
     viewModel = MainViewModel(processor)
 
-    observer = viewModel.viewState().test()
+    observer = viewModel.viewState.test()
     emitter = PublishSubject.create()
     viewModel.intents(emitter)
 

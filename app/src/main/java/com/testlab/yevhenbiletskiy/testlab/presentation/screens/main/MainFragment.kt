@@ -51,13 +51,13 @@ class MainFragment : Fragment() {
   }
 
   private fun observeViewState() =
-      viewModel.viewState()
+      viewModel.viewState
           .observeOn(AndroidSchedulers.mainThread())
           .doOnNext { Timber.d("----- ViewState: $it") }
           .subscribe { renderState(it) }
 
   private fun observeViewEffects() =
-      viewModel.viewEffect()
+      viewModel.viewEffect
           .observeOn(AndroidSchedulers.mainThread())
           .doOnNext { Timber.d("----- ViewEffect: $it") }
           .subscribe { renderEffect(it) }
