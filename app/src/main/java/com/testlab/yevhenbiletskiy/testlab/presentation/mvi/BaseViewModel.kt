@@ -16,6 +16,7 @@ import timber.log.Timber
 abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect>
 constructor(
     processor: Processor<I, Lce<out R>>,
+    // TODO-eugene you don't need to pass it using constructor, make the derived class to supply it
     initialIntent: Class<out I>
 ) : ViewModel() {
 
