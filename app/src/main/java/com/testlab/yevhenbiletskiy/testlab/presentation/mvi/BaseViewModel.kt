@@ -15,7 +15,7 @@ import timber.log.Timber
 
 abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffect> : ViewModel() {
 
-  /** Use to supply Intents from View **/
+  /** Use to supply Intents from View  **/
   fun intents(intents: Observable<I>): Disposable {
     createPipeline
     return intents.subscribe(
