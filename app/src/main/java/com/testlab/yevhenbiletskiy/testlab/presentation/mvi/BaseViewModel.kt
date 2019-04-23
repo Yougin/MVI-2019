@@ -27,22 +27,22 @@ abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffe
   /** Returns an Observable which emits recent ViewState **/
   val viewState: Observable<S> get() = _viewState
 
-  /** Returns an Observable which emits ViewEffect **/
+  /** Returns an Observable which emits ViewEffect (a one time operation, like Toast) **/
   val viewEffect: Observable<E> get() = _viewEffect
 
-  /** Implement to return Processor */
+  /** Implement it to return Processor */
   protected abstract val processor: Processor<I, Lce<out R>>
 
-  /** Implement to return Reducer **/
+  /** Implement it to return Reducer **/
   protected abstract val reducer: BiFunction<S, Lce<out R>, S>
 
-  /** Implement to get initial view state **/
+  /** Implement it to get initial view state **/
   protected abstract val initialState: S
 
-  /** Implement to get Initial Intent **/
+  /** Implement it to get Initial Intent **/
   protected abstract val initialIntent: Class<out I>
 
-  /** Implement to translate results to View ViewEffect **/
+  /** Implement it to translate results to View ViewEffect **/
   protected abstract fun resultToViewEffect(): ObservableTransformer<Lce<out R>, E>
 
 
@@ -59,7 +59,6 @@ abstract class BaseViewModel<I : Intent, R : Result, S : ViewState, E : ViewEffe
         .doOnNext { Timber.d("----- Result: ${it.javaClass.simpleName}") }
         .publish()
 
-    // TODO-eugene test view effect too
     viewChanges.compose(resultToViewState()).subscribe(_viewState)
     viewChanges.compose(resultToViewEffect()).subscribe(_viewEffect)
 
